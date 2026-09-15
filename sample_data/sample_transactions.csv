@@ -1,0 +1,121 @@
+Date,Description,Amount,Type
+2019-07-01,Thai Restaurant,24.0,debit
+2019-07-01,Amazon,13.09,debit
+2019-07-02,Hardware Store,229.9,debit
+2019-07-02,Mortgage Payment,1100.0,debit
+2019-07-04,Netflix,13.9,debit
+2019-07-05,Brewing Company,19.0,debit
+2019-07-05,Biweekly Paycheck,2250.0,credit
+2019-07-06,Credit Card Payment,220.08,credit
+2019-07-06,Grocery Store,92.98,debit
+2019-07-06,Greek Restaurant,23.26,debit
+2019-07-07,Hardware Store,103.14,debit
+2019-07-08,Credit Card Payment,305.28,debit
+2019-07-08,Credit Card Payment,220.08,debit
+2019-07-09,Credit Card Payment,549.72,credit
+2019-07-09,Spotify,10.69,debit
+2019-07-10,Phone Company,65.0,debit
+2019-07-10,Gas Company,30.0,debit
+2019-07-15,Grocery Store,87.14,debit
+2019-07-16,Amazon,89.99,debit
+2019-07-16,Power Company,60.0,debit
+2019-07-17,City Water Charges,35.0,debit
+2019-07-18,State Farm,75.0,debit
+2019-07-18,Credit Card Payment,814.5,debit
+2019-07-18,BP,36.42,debit
+2019-07-18,Grocery Store,29.83,debit
+2019-07-18,Brunch Restaurant,8.82,debit
+2019-07-19,Credit Card Payment,115.52,credit
+2019-07-19,Biweekly Paycheck,2250.0,credit
+2019-07-19,Mexican Restaurant,28.0,debit
+2019-07-22,Credit Card Payment,257.08,credit
+2019-07-22,Thai Restaurant,26.67,debit
+2019-07-23,Credit Card Payment,257.08,debit
+2019-07-24,Starbucks,2.5,debit
+2019-07-27,Barbershop,30.0,debit
+2019-07-28,Hardware Store,44.31,debit
+2019-07-29,Grocery Store,5.35,debit
+2019-07-29,Fancy Restaurant,44.92,debit
+2019-07-30,Grocery Store,15.77,debit
+2019-07-30,Internet Service Provider,75.0,debit
+2019-08-01,Amazon,13.09,debit
+2019-08-02,Mortgage Payment,1100.0,debit
+2019-08-02,Biweekly Paycheck,2250.0,credit
+2019-08-03,BP,36.36,debit
+2019-08-03,Grocery Store,3.96,debit
+2019-08-03,American Tavern,23.47,debit
+2019-08-04,Netflix,13.9,debit
+2019-08-05,Brewing Company,18.0,debit
+2019-08-05,Credit Card Payment,349.28,credit
+2019-08-05,Credit Card Payment,117.65,credit
+2019-08-06,Credit Card Payment,521.17,debit
+2019-08-06,Credit Card Payment,117.65,debit
+2019-08-06,Hardware Store,125.0,debit
+2019-08-08,Grocery Store,11.72,debit
+2019-08-09,Spotify,10.69,debit
+2019-08-09,Gas Company,30.0,debit
+2019-08-12,Phone Company,65.0,debit
+2019-08-12,Thai Restaurant,26.67,debit
+2019-08-14,Starbucks,2.75,debit
+2019-08-15,Credit Card Payment,335.2,debit
+2019-08-15,Power Company,60.0,debit
+2019-08-16,Biweekly Paycheck,2250.0,credit
+2019-08-16,City Water Charges,35.0,debit
+2019-08-17,Credit Card Payment,87.17,credit
+2019-08-17,Grocery Store,33.15,debit
+2019-08-17,Barbershop,19.0,debit
+2019-08-17,American Tavern,3.5,debit
+2019-08-19,Credit Card Payment,1248.95,debit
+2019-08-20,State Farm,75.0,debit
+2019-08-20,Starbucks,2.75,debit
+2019-08-21,Shell,34.69,debit
+2019-08-23,Starbucks,2.75,debit
+2019-08-25,Brunch Restaurant,39.43,debit
+2019-08-26,Hardware Store,66.75,debit
+2019-08-29,Starbucks,3.0,debit
+2019-08-30,Starbucks,2.75,debit
+2019-08-30,Internet Service Provider,75.0,debit
+2019-08-30,Biweekly Paycheck,2250.0,credit
+2019-08-31,Hardware Store,68.04,debit
+2019-08-31,BBQ Restaurant,41.78,debit
+2019-09-01,Amazon,13.09,debit
+2019-09-03,Mortgage Payment,1100.0,debit
+2019-09-03,Fancy Restaurant,41.24,debit
+2019-09-04,Netflix,13.9,debit
+2019-09-05,Starbucks,3.75,debit
+2019-09-06,Credit Card Payment,1390.37,credit
+2019-09-06,Credit Card Payment,1390.37,debit
+2019-09-06,Credit Card Payment,502.75,debit
+2019-09-07,Brewing Company,12.87,debit
+2019-09-08,Brewing Company,19.3,debit
+2019-09-09,Shell,28.77,debit
+2019-09-09,Grocery Store,65.09,debit
+2019-09-09,Hardware Store,26.25,debit
+2019-09-09,Spotify,10.69,debit
+2019-09-09,Gas Company,30.0,debit
+2019-09-11,Credit Card Payment,360.56,credit
+2019-09-11,Phone Company,65.0,debit
+2019-09-12,Credit Card Payment,360.56,debit
+2019-09-13,Starbucks,2.75,debit
+2019-09-13,Biweekly Paycheck,2250.0,credit
+2019-09-14,Grocery Store,46.44,debit
+2019-09-15,Amazon,47.66,debit
+2019-09-16,Credit Card Payment,90.57,debit
+2019-09-16,Credit Card Payment,90.57,credit
+2019-09-16,City Water Charges,35.0,debit
+2019-09-17,Credit Card Payment,186.13,credit
+2019-09-17,Power Company,60.0,debit
+2019-09-18,State Farm,75.0,debit
+2019-09-18,Credit Card Payment,1606.46,debit
+2019-09-19,Brewing Company,40.81,debit
+2019-09-19,Starbucks,2.75,debit
+2019-09-20,Credit Card Payment,9.43,credit
+2019-09-22,Seafood Restaurant,131.1,debit
+2019-09-23,Credit Card Payment,9.43,debit
+2019-09-23,Grocery Store,27.71,debit
+2019-09-23,Amazon,24.63,debit
+2019-09-27,Biweekly Paycheck,2250.0,credit
+2019-09-28,BP,33.46,debit
+2019-09-28,Sheetz,4.27,debit
+2019-09-30,Starbucks,1.75,debit
+2019-09-30,Internet Service Provider,75.0,debit

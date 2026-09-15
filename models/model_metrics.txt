@@ -1,0 +1,4 @@
+Test accuracy: 0.938
+Accuracy on distinct merchant strings: 0.800
+Train size: 644, Test size: 162
+Classes: ['Alcohol & Bars', 'Auto Insurance', 'Coffee Shops', 'Credit Card Payment', 'Fast Food', 'Gas & Fuel', 'Groceries', 'Haircut', 'Home Improvement', 'Internet', 'Mobile Phone', 'Mortgage & Rent', 'Movies & Dvds', 'Music', 'Other', 'Paycheck', 'Restaurants', 'Shopping', 'Television', 'Utilities']
