@@ -6,23 +6,25 @@ import uuid
 import db
 import categorizer
 import analytics
+import style
 
-st.set_page_config(page_title="Personal Finance Analytics Dashboard", layout="wide")
+st.set_page_config(page_title="Personal Finance Analytics Dashboard", layout="wide", page_icon="📊")
+style.inject_css()
+style.apply_matplotlib_style()
 
-st.title("💰 Personal Finance Analytics Dashboard")
+st.title("Personal Finance Analytics Dashboard")
 st.caption(
-    "Upload a transaction CSV and get automatic categorization "
-    "(via a trained ML classifier) plus a full spending analysis."
+    "Upload a transaction history and get an automatic breakdown of income, "
+    "spending, and savings — categorized by a trained ML model, not a fixed list of rules."
 )
 
 # ---------- Upload ----------
 with st.sidebar:
     st.header("Upload")
-    uploaded_file = st.file_uploader("Transaction CSV", type=["csv"])
+    uploaded_file = st.file_uploader("Transaction CSV", type=["csv"], label_visibility="collapsed")
     st.caption(
         "Needs a date, description, and amount column. "
-        "A debit/credit or type column is optional -- we'll infer it "
-        "from the amount sign if it's missing."
+        "A debit/credit column is optional — it's inferred from the amount sign if missing."
     )
 
     if uploaded_file is not None:
@@ -36,11 +38,11 @@ with st.sidebar:
 
             st.success(f"Loaded {len(categorized)} transactions.")
             if dropped:
-                st.warning(f"Skipped {dropped} rows with missing/unparseable date, description, or amount.")
+                st.warning(f"Skipped {dropped} rows with missing or unreadable date, description, or amount.")
 
             n_low_conf = (categorized["category_source"] == "low_confidence").sum()
             if n_low_conf:
-                st.info(f"{n_low_conf} transaction(s) marked 'Uncategorized' -- the model wasn't confident enough to guess.")
+                st.info(f"{n_low_conf} transaction(s) marked 'Uncategorized' — the model wasn't confident enough to guess.")
         except ValueError as e:
             st.error(str(e))
 
@@ -48,7 +50,7 @@ with st.sidebar:
     batches = db.list_batches()
     if not batches.empty:
         st.caption(f"{len(batches)} upload batch(es) stored")
-        if st.button("Clear all data", type="secondary"):
+        if st.button("Clear all data"):
             db.clear_all()
             st.rerun()
 
@@ -56,7 +58,7 @@ with st.sidebar:
 df = db.load_all_transactions()
 
 if df.empty:
-    st.info("Upload a CSV to get started, or try the sample file in the repo (`sample_data/sample_transactions.csv`).")
+    st.info("Upload a CSV in the sidebar to get started, or try `sample_data/sample_transactions.csv` from the repo.")
     st.stop()
 
 # ---------- Filters ----------
@@ -83,29 +85,32 @@ if fdf.empty:
 # ---------- Overview metrics ----------
 stats = analytics.overall_stats(fdf)
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Total Income", f"${stats['total_income']:,.2f}")
-c2.metric("Total Expenses", f"${stats['total_expenses']:,.2f}")
+c1.metric("Total income", f"${stats['total_income']:,.2f}")
+c2.metric("Total expenses", f"${stats['total_expenses']:,.2f}")
 c3.metric("Net", f"${stats['net']:,.2f}")
-c4.metric("Savings Rate", f"{stats['savings_rate']:.1f}%")
+c4.metric("Savings rate", f"{stats['savings_rate']:.1f}%")
 
 st.divider()
 
 # ---------- Monthly income vs expenses ----------
-st.subheader("Income vs. Expenses by Month")
+st.subheader("Income vs. expenses by month")
 monthly = analytics.monthly_summary(fdf)
 fig, ax = plt.subplots(figsize=(10, 4))
-ax.bar(monthly["month"], monthly["income"], label="Income", alpha=0.8)
-ax.bar(monthly["month"], monthly["expenses"], label="Expenses", alpha=0.8)
+width = 0.38
+x = range(len(monthly))
+ax.bar([i - width/2 for i in x], monthly["income"], width=width, label="Income", color=style.INCOME)
+ax.bar([i + width/2 for i in x], monthly["expenses"], width=width, label="Expenses", color=style.EXPENSE)
+ax.set_xticks(list(x))
+ax.set_xticklabels(monthly["month"], rotation=45, ha="right")
 ax.set_ylabel("$")
 ax.legend()
-plt.xticks(rotation=45, ha="right")
 st.pyplot(fig)
 
 # ---------- Savings rate trend ----------
-st.subheader("Savings Rate Trend")
+st.subheader("Savings rate trend")
 fig2, ax2 = plt.subplots(figsize=(10, 3))
-ax2.plot(monthly["month"], monthly["savings_rate"], marker="o")
-ax2.axhline(0, color="gray", linewidth=0.8)
+ax2.plot(monthly["month"], monthly["savings_rate"], marker="o", color=style.NET, linewidth=2)
+ax2.axhline(0, color=style.SLATE, linewidth=0.8)
 ax2.set_ylabel("Savings rate (%)")
 plt.xticks(rotation=45, ha="right")
 st.pyplot(fig2)
@@ -114,17 +119,17 @@ col1, col2 = st.columns(2)
 
 # ---------- Top categories ----------
 with col1:
-    st.subheader("Top Spending Categories")
+    st.subheader("Top spending categories")
     top_cats = analytics.top_categories(fdf)
     fig3, ax3 = plt.subplots(figsize=(6, 4))
-    ax3.barh(top_cats["category"], top_cats["spend"])
+    ax3.barh(top_cats["category"], top_cats["spend"], color=style.CATEGORY_PALETTE[0])
     ax3.invert_yaxis()
     ax3.set_xlabel("$")
     st.pyplot(fig3)
 
 # ---------- Month-over-month comparison ----------
 with col2:
-    st.subheader("Month-over-Month Change")
+    st.subheader("Month-over-month change")
     mom = analytics.month_over_month(fdf)
     st.dataframe(
         mom[["month", "income", "expenses", "expenses_change_pct"]].rename(
@@ -134,11 +139,12 @@ with col2:
     )
 
 # ---------- Spending trends by category over time ----------
-st.subheader("Spending Trends by Category")
+st.subheader("Spending trends by category")
 cat_month = analytics.category_by_month(fdf)
 fig4, ax4 = plt.subplots(figsize=(10, 5))
-for cat in cat_month.columns:
-    ax4.plot(cat_month.index, cat_month[cat], marker="o", label=cat, linewidth=1)
+for i, cat in enumerate(cat_month.columns):
+    ax4.plot(cat_month.index, cat_month[cat], marker="o", markersize=4, label=cat,
+              linewidth=1.5, color=style.CATEGORY_PALETTE[i % len(style.CATEGORY_PALETTE)])
 ax4.legend(bbox_to_anchor=(1.02, 1), loc="upper left", fontsize=8)
 plt.xticks(rotation=45, ha="right")
 st.pyplot(fig4)
