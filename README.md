@@ -56,7 +56,7 @@ Python, pandas, scikit-learn, SQLite, Streamlit, Matplotlib
 
 ## Known limitations
 - The training data is a public dataset of ~800 transactions across 65
-  distinct merchants — solid for a portfolio project, but a production
+  distinct merchants, solid for a portfolio project, but a production
   system would want a much larger and more diverse merchant vocabulary.
 - Category set is fixed to what's in the training data. A merchant type the
   model has never seen will fall into whatever category its description
