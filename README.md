@@ -1,64 +1,42 @@
 # Personal Finance Analytics Dashboard
 
-Upload a bank transaction CSV and get automatic categorization (via a trained
-ML classifier, not hardcoded rules) plus a full spending analysis: income vs.
-expenses, savings rate, monthly trends, top categories, and month-over-month
-comparisons.
+Upload a bank transaction CSV and the app categorizes every transaction with a trained ML model, not hardcoded rules. Then it shows you where your money goes: income vs. expenses, savings rate, monthly trends, top categories, and month-over-month changes.
 
 ## How it works
 
-**1. Categorization model** (`train_model.py`)
-Trained on a labeled dataset of ~800 real-world-style transactions (merchant
-name → category). Uses TF-IDF over *character* n-grams rather than word
-tokens, since real bank statement descriptions are often truncated or
-concatenated (`AMZN MKTP US*2K3`, `SQ *THAI TAVERN`) — character n-grams pick
-up on recognizable substrings regardless of the surrounding noise. Feeds a
-Logistic Regression classifier.
+**Categorization model** (`train_model.py`)
+Trained on about 800 labeled transactions. Bank descriptions are often cut off or mashed together (`AMZN MKTP US*2K3`, `SQ *THAI TAVERN`), so I used TF-IDF on character n-grams instead of whole words. That way the model picks up on recognizable pieces of a merchant name even when the rest is noise. A logistic regression classifier sits on top.
 
-- Test accuracy: 93.8%
-- Accuracy on the 65 distinct merchant strings in the dataset (a more honest
-  number, since the test-set accuracy is inflated by repeated merchants):
-  80%
-- Low-confidence predictions are flagged as "Uncategorized" rather than
-  forced into a guess — see `categorizer.py`
+- 93.8% test accuracy
+- 80% accuracy on the 65 distinct merchants in the data. This is the more honest number, since the test score is inflated by merchants that repeat.
+- Low-confidence predictions are labeled "Uncategorized" instead of forcing a guess
 
-**2. Ingestion pipeline** (`categorizer.py`)
-Normalizes whatever column names/casing a bank export uses (`Transaction
-Date` vs `Date`, `Merchant` vs `Description`, etc.), infers income vs.
-expense from a type column if present or from the sign of the amount if not,
-and standardizes everything into one schema.
+**Ingestion** (`categorizer.py`)
+Handles different column names from different banks (`Transaction Date` vs `Date`, `Merchant` vs `Description`). It figures out income vs. expense from a type column, or from the sign of the amount if there isn't one.
 
-**3. Storage** (`db.py`)
-SQLite. Each upload is tagged with a batch ID so multiple statements can be
-loaded and analyzed together over time.
+**Storage** (`db.py`)
+SQLite. Each upload gets a batch ID, so you can load several statements and analyze them together.
 
-**4. Analytics** (`analytics.py`)
-Pure pandas functions — monthly income/expense/savings rate, top spending
-categories, category trends over time, month-over-month % change. Kept
-separate from the UI so they're independently testable.
+**Analytics** (`analytics.py`)
+Plain pandas functions, kept separate from the UI so they're easy to test.
 
-**5. App** (`app.py`)
-Streamlit front end with CSV upload, interactive filters (date range,
-category, type), and matplotlib visualizations.
+**App** (`app.py`)
+Streamlit front end with CSV upload, filters for date, category, and type, and Matplotlib charts.
 
-## Running it
+## Run it
 
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Try it with `sample_data/sample_transactions.csv` — a raw, uncategorized
-export with no category column, so you can see the model do its job.
+Try it with `sample_data/sample_transactions.csv`. It has no category column, so you can watch the model categorize everything from scratch.
 
 ## Tech stack
+
 Python, pandas, scikit-learn, SQLite, Streamlit, Matplotlib
 
-## Known limitations
-- The training data is a public dataset of ~800 transactions across 65
-  distinct merchants, solid for a portfolio project, but a production
-  system would want a much larger and more diverse merchant vocabulary.
-- Category set is fixed to what's in the training data. A merchant type the
-  model has never seen will fall into whatever category its description
-  most closely resembles, or get flagged "Uncategorized" if the model isn't
-  confident.
+## Limitations
+
+- The model only knows about 65 distinct merchants. That's fine for a portfolio project, but a real system would need far more.
+- The category list is fixed to what's in the training data. A merchant it hasn't seen gets the closest match, or "Uncategorized" if the model isn't confident.
